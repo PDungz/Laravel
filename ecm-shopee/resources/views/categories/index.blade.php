@@ -20,7 +20,7 @@
         @endif
 
         {{-- Nút tạo mới --}}
-        <a href="{{ route('categories.create') }}" class="btn btn-primary">Tạo Danh Mục Mới</a>
+        <a href="{{ route('categories.create') }}" class="btn btn-primary mb-5">Tạo Danh Mục Mới</a>
         
         {{-- Liệt kê danh mục --}}
         <table class="table table-striped">
@@ -39,6 +39,7 @@
                         <td>{{ $category->name }}</td>
                         <td>{{ $category->description }}</td>
                         <td>
+                            <a href="{{ route('categories.show', $category->id) }}" class="btn btn-primary btn-sm">Xem</a>
                             <a href="{{ route('categories.edit', $category->id) }}" class="btn btn-warning btn-sm">Sửa</a>
                             <form action="{{ route('categories.destroy', $category->id) }}" method="POST" style="display:inline;">
                                 @csrf
