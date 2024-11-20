@@ -1,0 +1,40 @@
+{{-- resources/views/categories/create.blade.php --}}
+
+@extends('layouts.app')
+
+@section('title', 'Tạo Danh Mục Mới')
+
+@section('content')
+    <div class="container">
+        <h1 class="mb-4">Tạo Danh Mục Mới</h1>
+
+        {{-- Hiển thị thông báo lỗi nếu có --}}
+        @if($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        {{-- Form tạo mới danh mục --}}
+        <form action="{{ route('categories.store') }}" method="POST">
+            @csrf
+
+            <div class="mb-3">
+                <label for="name" class="form-label">Tên Danh Mục</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="description" class="form-label">Mô Tả</label>
+                <textarea class="form-control" id="description" name="description" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Lưu</button>
+            <a href="{{ route('categories.index') }}" class="btn btn-secondary">Hủy</a>
+        </form>
+    </div>
+@endsection
