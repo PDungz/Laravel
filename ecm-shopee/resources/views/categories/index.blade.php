@@ -41,7 +41,7 @@
                         <td>
                             <a href="{{ route('categories.show', $category->id) }}" class="btn btn-primary btn-sm">Xem</a>
                             <a href="{{ route('categories.edit', $category->id) }}" class="btn btn-warning btn-sm">Sửa</a>
-                            <form action="{{ route('categories.destroy', $category->id) }}" method="POST" style="display:inline;">
+                            <form action="{{ route('categories.destroy', $category->id) }}" method="POST" style="display:inline;" onsubmit="return confirmDelete();">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
@@ -53,4 +53,12 @@
         </table>
 
     </div>
+@endsection
+
+@section('scripts')
+<script>
+    function confirmDelete() {
+        return confirm('Are you sure you want to delete this category? This action cannot be undone.');
+    }
+</script>
 @endsection
