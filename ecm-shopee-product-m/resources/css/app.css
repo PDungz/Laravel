@@ -1,0 +1,120 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+}
+
+nav {
+    background-color: #007bff;
+    color: white;
+    padding: 0.5em 2em;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-right: 1em;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+ul li {
+    display: inline;
+    margin-right: 15px;
+}
+
+/* Dành cho input */
+.input-field {
+    padding: 8px;
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+}
+
+/* Dành cho button (a) */
+.btn {
+    display: inline-block;
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+.btn-primary {
+    background-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-warning {
+    background-color: #ffa500; /* Màu cam nhạt */
+}
+
+.btn-warning:hover {
+    background-color: #e0a800; /* Màu cam đậm */
+}
+
+/* Dành cho bảng */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.table td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+    white-space: nowrap; /* Đảm bảo nội dung không xuống dòng */
+}
+
+.table td a,
+.table td form {
+    display: inline-block; /* Đặt các nút và form trên cùng một dòng */
+    margin-right: 5px; /* Khoảng cách giữa các nút */
+}
+
+.table td form {
+    margin: 0; /* Xóa margin mặc định của form */
+}
+
+.table td form button {
+    margin: 0; /* Xóa margin của nút trong form */
+    display: inline-block; /* Đảm bảo nút giữ nguyên chiều cao */
+    vertical-align: middle; /* Căn giữa nút với các liên kết khác */
+}

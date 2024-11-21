@@ -1,7 +1,7 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
-<a href="https://github.com/PDungz">
+<a href="https://github.com/PDungz/Laravel">
   <img src="https://img.shields.io/badge/-GitHub%20Phùng Văn Dũng-black?logo=github&logoColor=white" alt="GitHub Channel">
 </a>
 <a href="https://youtube.com/@pvdnocode3623?si=o3UX8WHisI5mAVCu">
