@@ -9,24 +9,32 @@ use Illuminate\Support\Facades\Log;
 class CategoryController extends Controller
 {
     /**
-     * Hiển thị danh sách tất cả các danh mục.
+     * Hiển thị danh sách tất cả các danh mục với chức năng tìm kiếm.
      * 
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
-            // Lấy tất cả các danh mục từ cơ sở dữ liệu.
-            $categories = Category::all();
+            // Lấy từ khóa tìm kiếm từ query string.
+            $search = $request->input('search');
+
+            // Lọc danh mục nếu có từ khóa tìm kiếm, ngược lại lấy tất cả.
+            $categories = Category::when($search, function ($query, $search) {
+                return $query->where('name', 'LIKE', "%{$search}%")
+                            ->orWhere('description', 'LIKE', "%{$search}%");
+            })->get();
 
             // Trả về view 'categories.index' với dữ liệu danh sách danh mục.
-            return view('categories.index', compact('categories'));
+            return view('categories.index', compact('categories', 'search'));
         } catch (\Exception $e) {
             // Ghi log lỗi và trả về thông báo lỗi cho người dùng.
-            Log::error("Lỗi khi lấy danh sách danh mục: " . $e->getMessage());
-            return redirect()->route('categories.index')->with('error', 'Không thể lấy danh sách danh mục. Vui lòng thử lại sau.');
+            Log::error("Lỗi khi tìm kiếm danh mục: " . $e->getMessage());
+            return redirect()->route('categories.index')->with('error', 'Không thể tìm kiếm danh mục. Vui lòng thử lại sau.');
         }
     }
+
 
     /**
      * Hiển thị form tạo mới danh mục.

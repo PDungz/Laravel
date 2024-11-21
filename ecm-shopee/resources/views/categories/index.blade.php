@@ -18,7 +18,19 @@
                 {{ session('error') }}
             </div>
         @endif
-
+        <!-- Form tìm kiếm -->
+        <form method="GET" action="{{ route('categories.index') }}" class="mb-3">
+            <div class="input-group">
+                <input 
+                    type="text" 
+                    name="search" 
+                    class="form-control" 
+                    placeholder="Tìm kiếm danh mục..." 
+                    value="{{ request('search') }}"
+                >
+                <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+            </div>
+        </form>
         {{-- Nút tạo mới --}}
         <a href="{{ route('categories.create') }}" class="btn btn-primary mb-5">Tạo Danh Mục Mới</a>
         
