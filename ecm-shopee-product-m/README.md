@@ -603,13 +603,34 @@ Bài hướng dẫn này sẽ giúp bạn xây dựng một dự án Laravel qu�
 
 Để tạo liên kết lưu trữ hình ảnh trong Laravel, bạn cần sử dụng lệnh Artisan để tạo symbolic link từ thư mục `storage/app/public` đến thư mục `public/storage`. Đây là cách để các tệp trong thư mục `storage` có thể truy cập được qua URL.
 
-Lệnh cần chạy là:
+Lỗi này xảy ra vì liên kết **symbolic link** đã tồn tại trong thư mục `public/storage`. Để khắc phục, bạn có thể làm như sau:
 
-```bash
-php artisan storage:link
-```
+### Cách giải quyết:
 
-Lệnh này sẽ tạo một symbolic link từ thư mục `public/storage` đến `storage/app/public`, cho phép bạn truy cập các tệp lưu trữ từ thư mục `public`.
+1. **Xóa liên kết cũ**  
+   Bạn cần xóa liên kết symbolic link cũ bằng lệnh sau:  
+   ```bash
+   rm public/storage
+   ```
+
+   > **Lưu ý**: Nếu bạn đang sử dụng Windows và `rm` không hoạt động, bạn có thể xóa thư mục `public/storage` bằng cách thủ công thông qua File Explorer.
+
+2. **Tạo lại symbolic link**  
+   Sau khi xóa, chạy lại lệnh:
+   ```bash
+   php artisan storage:link
+   ```
+
+   Nếu lệnh chạy thành công, bạn sẽ thấy thông báo:
+   ```
+   The [public/storage] directory has been linked.
+   ```
+
+---
+
+### Kiểm tra:
+- Đảm bảo rằng thư mục `storage` được ánh xạ chính xác đến `public/storage`.
+- Đảm bảo bạn có quyền ghi (write) trong thư mục ứng dụng nếu bạn gặp vấn đề quyền.
 
 ### Cách sử dụng:
 
