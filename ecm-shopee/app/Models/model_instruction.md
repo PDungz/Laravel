@@ -16,10 +16,10 @@ Dưới đây là hướng dẫn chi tiết về cách **tạo model** trong Lar
 Để tạo một model trong Laravel, bạn sử dụng lệnh Artisan sau:
 
 ```bash
-php artisan make:model Product
+php artisan make:model NameModel
 ```
 
-Lệnh trên sẽ tạo ra một file model có tên là `Product.php` trong thư mục `app/Models`.
+Lệnh trên sẽ tạo ra một file model có tên là `NameModel.php` trong thư mục `app/Models`.
 
 ### **Model Cơ Bản:**
 
@@ -31,7 +31,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Product extends Model
+class NameModel extends Model
 {
     use HasFactory;
 
@@ -51,7 +51,7 @@ class Product extends Model
 
 ### **Giải thích về các thuộc tính trong model:**
 
--   **`$table`**: Chỉ định tên bảng trong cơ sở dữ liệu mà model này đại diện. Laravel sẽ tự động sử dụng tên số nhiều của tên model (ví dụ: `Product` sẽ tương ứng với bảng `products`). Nếu bảng của bạn có tên khác, bạn cần chỉ định thủ công.
+-   **`$table`**: Chỉ định tên bảng trong cơ sở dữ liệu mà model này đại diện. Laravel sẽ tự động sử dụng tên số nhiều của tên model (ví dụ: `NameModel` sẽ tương ứng với bảng `products`). Nếu bảng của bạn có tên khác, bạn cần chỉ định thủ công.
 -   **`$timestamps`**: Nếu bảng của bạn không có các cột `created_at` và `updated_at`, bạn có thể tắt tính năng timestamps bằng cách đặt `public $timestamps = false;`.
 
 -   **`$fillable`**: Thuộc tính này là một mảng các trường có thể gán đại trà (mass assignable). Điều này giúp bảo vệ ứng dụng khỏi các cuộc tấn công kiểu Mass Assignment.
@@ -66,25 +66,25 @@ Dưới đây là các phương thức hay sử dụng khi làm việc với Elo
 1. **Lấy tất cả bản ghi:**
 
 ```php
-$products = Product::all(); // Lấy tất cả các sản phẩm trong bảng products
+$products = NameModel::all(); // Lấy tất cả các sản phẩm trong bảng products
 ```
 
 2. **Lấy bản ghi đầu tiên:**
 
 ```php
-$product = Product::first(); // Lấy bản ghi đầu tiên
+$product = NameModel::first(); // Lấy bản ghi đầu tiên
 ```
 
 3. **Lấy bản ghi theo điều kiện:**
 
 ```php
-$product = Product::where('name', 'Laptop')->first(); // Lấy sản phẩm có tên 'Laptop'
+$product = NameModel::where('name', 'Laptop')->first(); // Lấy sản phẩm có tên 'Laptop'
 ```
 
 4. **Lấy tất cả sản phẩm với một điều kiện:**
 
 ```php
-$products = Product::where('price', '>', 1000)->get(); // Lấy các sản phẩm có giá lớn hơn 1000
+$products = NameModel::where('price', '>', 1000)->get(); // Lấy các sản phẩm có giá lớn hơn 1000
 ```
 
 ### **2.2. Thêm Dữ Liệu (Inserting Data)**
@@ -92,7 +92,7 @@ $products = Product::where('price', '>', 1000)->get(); // Lấy các sản phẩ
 1. **Thêm một bản ghi mới:**
 
 ```php
-$product = new Product();
+$product = new NameModel();
 $product->name = 'Smartphone';
 $product->price = 500;
 $product->description = 'A high-end smartphone.';
@@ -102,7 +102,7 @@ $product->save(); // Lưu sản phẩm vào cơ sở dữ liệu
 2. **Thêm một bản ghi mới bằng cách sử dụng `create`:**
 
 ```php
-$product = Product::create([
+$product = NameModel::create([
     'name' => 'Tablet',
     'price' => 300,
     'description' => 'A powerful tablet.'
@@ -116,7 +116,7 @@ Lưu ý: Để sử dụng phương thức `create`, bạn cần chắc chắn r
 1. **Cập nhật một bản ghi:**
 
 ```php
-$product = Product::find(1); // Tìm sản phẩm có id = 1
+$product = NameModel::find(1); // Tìm sản phẩm có id = 1
 $product->price = 550; // Cập nhật giá sản phẩm
 $product->save(); // Lưu thay đổi
 ```
@@ -124,7 +124,7 @@ $product->save(); // Lưu thay đổi
 2. **Cập nhật bản ghi theo điều kiện:**
 
 ```php
-Product::where('name', 'Smartphone')
+NameModel::where('name', 'Smartphone')
     ->update(['price' => 450]); // Cập nhật giá của sản phẩm có tên 'Smartphone'
 ```
 
@@ -133,14 +133,14 @@ Product::where('name', 'Smartphone')
 1. **Xóa một bản ghi:**
 
 ```php
-$product = Product::find(1); // Tìm sản phẩm có id = 1
+$product = NameModel::find(1); // Tìm sản phẩm có id = 1
 $product->delete(); // Xóa sản phẩm
 ```
 
 2. **Xóa bản ghi theo điều kiện:**
 
 ```php
-Product::where('price', '<', 100)->delete(); // Xóa các sản phẩm có giá nhỏ hơn 100
+NameModel::where('price', '<', 100)->delete(); // Xóa các sản phẩm có giá nhỏ hơn 100
 ```
 
 ### **2.5. Các Quan Hệ giữa Các Bảng (Relationships)**
@@ -154,27 +154,27 @@ Trong Laravel, khi bạn thiết lập các mối quan hệ giữa các bảng (
 #### **Laravel Quy Ước Mặc Định:**
 
 -   Laravel sẽ sử dụng tên bảng của model hiện tại và thêm `_id` để tạo khóa ngoại.
--   Ví dụ, nếu bạn có model `Product`, Laravel sẽ tìm kiếm trường `product_id` trong bảng liên kết.
+-   Ví dụ, nếu bạn có model `NameModel`, Laravel sẽ tìm kiếm trường `product_id` trong bảng liên kết.
 
 #### **Ví dụ:**
 
 Giả sử bạn có bảng `products` và bảng `product_details`. Một sản phẩm chỉ có một chi tiết sản phẩm liên quan.
 
-**Trong model `Product`:**
+**Trong model `NameModel`:**
 
 ```php
 public function detail()
 {
-    return $this->hasOne(ProductDetail::class);
+    return $this->hasOne(NameModelDetail::class);
 }
 ```
 
-**Trong model `ProductDetail`:**
+**Trong model `NameModelDetail`:**
 
 ```php
 public function product()
 {
-    return $this->belongsTo(Product::class);
+    return $this->belongsTo(NameModel::class);
 }
 ```
 
@@ -184,21 +184,21 @@ public function product()
 
 Bạn có thể chỉ định khóa ngoại nếu bảng quan hệ của bạn không tuân theo quy ước mặc định. Ví dụ, nếu bảng `product_details` có khóa ngoại là `product_reference_id` thay vì `product_id`, bạn có thể làm như sau:
 
-**Trong model `Product`:**
+**Trong model `NameModel`:**
 
 ```php
 public function detail()
 {
-    return $this->hasOne(ProductDetail::class, 'product_reference_id');
+    return $this->hasOne(NameModelDetail::class, 'product_reference_id');
 }
 ```
 
-**Trong model `ProductDetail`:**
+**Trong model `NameModelDetail`:**
 
 ```php
 public function product()
 {
-    return $this->belongsTo(Product::class, 'product_reference_id');
+    return $this->belongsTo(NameModel::class, 'product_reference_id');
 }
 ```
 
@@ -206,22 +206,22 @@ public function product()
 
 #### **Laravel Quy Ước Mặc Định:**
 
--   Trong mối quan hệ **One to Many**, khóa ngoại sẽ là tên bảng của model liên kết, cộng với `_id`. Ví dụ, nếu bạn có model `Category` và `Product`, Laravel sẽ tự động tìm kiếm cột `category_id` trong bảng `products`.
+-   Trong mối quan hệ **One to Many**, khóa ngoại sẽ là tên bảng của model liên kết, cộng với `_id`. Ví dụ, nếu bạn có model `Category` và `NameModel`, Laravel sẽ tự động tìm kiếm cột `category_id` trong bảng `products`.
 
 #### **Ví dụ:**
 
-Giả sử bạn có một danh mục (Category) có nhiều sản phẩm (Product).
+Giả sử bạn có một danh mục (Category) có nhiều sản phẩm (NameModel).
 
 **Trong model `Category`:**
 
 ```php
 public function products()
 {
-    return $this->hasMany(Product::class);
+    return $this->hasMany(NameModel::class);
 }
 ```
 
-**Trong model `Product`:**
+**Trong model `NameModel`:**
 
 ```php
 public function category()
@@ -236,7 +236,7 @@ public function category()
 
 Nếu cột khóa ngoại của bạn không theo quy ước (ví dụ `category_ref_id` thay vì `category_id`), bạn có thể chỉ định khóa ngoại như sau:
 
-**Trong model `Product`:**
+**Trong model `NameModel`:**
 
 ```php
 public function category()
@@ -250,7 +250,7 @@ public function category()
 ```php
 public function products()
 {
-    return $this->hasMany(Product::class, 'category_ref_id');
+    return $this->hasMany(NameModel::class, 'category_ref_id');
 }
 ```
 
@@ -258,13 +258,13 @@ public function products()
 
 #### **Laravel Quy Ước Mặc Định:**
 
--   Laravel sẽ sử dụng tên số nhiều của hai bảng và sắp xếp chúng theo thứ tự alphabet, sau đó thêm `_id` để tạo tên bảng trung gian (pivot table). Ví dụ, với model `Product` và `Category`, bảng trung gian sẽ có tên là `category_product`, với khóa ngoại là `product_id` và `category_id`.
+-   Laravel sẽ sử dụng tên số nhiều của hai bảng và sắp xếp chúng theo thứ tự alphabet, sau đó thêm `_id` để tạo tên bảng trung gian (pivot table). Ví dụ, với model `NameModel` và `Category`, bảng trung gian sẽ có tên là `category_product`, với khóa ngoại là `product_id` và `category_id`.
 
 #### **Ví dụ:**
 
 Giả sử mỗi sản phẩm có thể thuộc nhiều danh mục, và mỗi danh mục có thể chứa nhiều sản phẩm.
 
-**Trong model `Product`:**
+**Trong model `NameModel`:**
 
 ```php
 public function categories()
@@ -278,7 +278,7 @@ public function categories()
 ```php
 public function products()
 {
-    return $this->belongsToMany(Product::class);
+    return $this->belongsToMany(NameModel::class);
 }
 ```
 
@@ -316,7 +316,7 @@ Laravel cung cấp một tính năng gọi là "scopes" giúp tái sử dụng c
 1. **Định nghĩa Scope:**
 
 ```php
-// Trong model Product
+// Trong model NameModel
 public function scopeExpensive($query)
 {
     return $query->where('price', '>', 1000);
@@ -326,7 +326,7 @@ public function scopeExpensive($query)
 2. **Sử dụng Scope:**
 
 ```php
-$products = Product::expensive()->get(); // Lấy tất cả các sản phẩm có giá > 1000
+$products = NameModel::expensive()->get(); // Lấy tất cả các sản phẩm có giá > 1000
 ```
 
 ## **3. Các Code Thường Sử Dụng trong Model**
@@ -334,7 +334,7 @@ $products = Product::expensive()->get(); // Lấy tất cả các sản phẩm c
 ### **3.1. Tìm kiếm theo nhiều điều kiện (Search with multiple conditions):**
 
 ```php
-$products = Product::where('name', 'like', '%phone%')
+$products = NameModel::where('name', 'like', '%phone%')
                     ->where('price', '>', 500)
                     ->get();
 ```
@@ -342,19 +342,19 @@ $products = Product::where('name', 'like', '%phone%')
 ### **3.2. Sắp xếp kết quả (Ordering results):**
 
 ```php
-$products = Product::orderBy('price', 'desc')->get(); // Sắp xếp theo giá giảm dần
+$products = NameModel::orderBy('price', 'desc')->get(); // Sắp xếp theo giá giảm dần
 ```
 
 ### **3.3. Giới hạn số lượng bản ghi (Limit records):**
 
 ```php
-$products = Product::limit(5)->get(); // Lấy 5 sản phẩm đầu tiên
+$products = NameModel::limit(5)->get(); // Lấy 5 sản phẩm đầu tiên
 ```
 
 ### **3.4. Thực hiện phân trang (Pagination):**
 
 ```php
-$products = Product::paginate(10); // Lấy 10 sản phẩm mỗi trang
+$products = NameModel::paginate(10); // Lấy 10 sản phẩm mỗi trang
 ```
 
 ---

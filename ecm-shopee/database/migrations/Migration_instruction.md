@@ -7,10 +7,12 @@ Dưới đây là một **code mẫu đầy đủ** cho các thao tác thường
 Lệnh tạo migration mới từ terminal:
 
 ```bash
-php artisan make:migration create_products_table
+php artisan make:migration create_<name>_table
 ```
 
 ### **2. Nội Dung Migration (Tạo, Thêm, Sửa Đổi Cột)**
+
+Dưới đây là bộ mã migration đầy đủ với các câu lệnh cơ bản bạn có thể sử dụng cho bất kỳ đối tượng nào trong Laravel. Bộ mã này bao gồm tất cả các câu lệnh để thao tác với bảng, từ tạo bảng mới, thay đổi cấu trúc bảng, thêm cột, đổi tên cột, cho đến các thao tác với chỉ mục và khóa ngoại.
 
 ```php
 <?php
@@ -19,7 +21,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProductsTable extends Migration
+class ExampleMigration extends Migration
 {
     /**
      * Run the migrations.
@@ -28,19 +30,62 @@ class CreateProductsTable extends Migration
      */
     public function up()
     {
-        // Tạo bảng 'products'
-        Schema::create('products', function (Blueprint $table) {
-            $table->id(); // Tạo cột 'id' tự động tăng
+        // Tạo bảng mới
+        Schema::create('example_table', function (Blueprint $table) {
+            $table->id(); // Cột 'id' tự động tăng
             $table->string('name'); // Cột 'name' kiểu string
-            $table->decimal('price', 10, 2); // Cột 'price' kiểu decimal với 10 chữ số, 2 chữ số thập phân
+            $table->integer('quantity')->default(0); // Cột 'quantity' kiểu integer, mặc định là 0
+            $table->decimal('price', 10, 2); // Cột 'price' kiểu decimal với 10 chữ số và 2 chữ số thập phân
             $table->text('description')->nullable(); // Cột 'description' kiểu text, có thể null
-            $table->foreignId('category_id')->constrained(); // Thêm khóa ngoại 'category_id' liên kết với bảng 'categories'
+            $table->boolean('is_active')->default(true); // Cột 'is_active' kiểu boolean, mặc định là true
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending'); // Cột 'status' kiểu enum
+            $table->date('order_date'); // Cột 'order_date' kiểu date
+            $table->time('order_time'); // Cột 'order_time' kiểu time
+            $table->dateTime('published_at')->nullable(); // Cột 'published_at' kiểu datetime, có thể null
+            $table->json('settings')->nullable(); // Cột 'settings' kiểu JSON, có thể null
+            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Khóa ngoại 'user_id', xóa cascade
             $table->timestamps(); // Tạo cột 'created_at' và 'updated_at'
         });
 
-        // Tạo chỉ mục duy nhất cho cột 'sku'
-        Schema::table('products', function (Blueprint $table) {
-            $table->string('sku')->unique(); // Tạo chỉ mục duy nhất cho cột 'sku'
+
+        // Thêm chỉ mục cho cột 'name'
+        Schema::table('example_table', function (Blueprint $table) {
+            $table->index('name'); // Thêm chỉ mục cho cột 'name'
+        });
+
+        // Thêm khóa ngoại liên kết với bảng khác (nếu có bảng liên quan)
+        Schema::table('example_table', function (Blueprint $table) {
+            $table->foreignId('category_id')->constrained('categories'); // Khóa ngoại liên kết với bảng 'categories'
+        });
+
+        // Thêm cột 'sku' với chỉ mục duy nhất
+        Schema::table('example_table', function (Blueprint $table) {
+            $table->string('sku')->unique(); // Cột 'sku' với chỉ mục duy nhất
+        });
+
+        // Thêm cột 'remember_token' cho chức năng "remember me"
+        Schema::table('example_table', function (Blueprint $table) {
+            $table->rememberToken(); // Thêm cột 'remember_token'
+        });
+
+        // Thêm cột xóa mềm (soft deletes)
+        Schema::table('example_table', function (Blueprint $table) {
+            $table->softDeletes(); // Thêm cột 'deleted_at' cho xóa mềm
+        });
+
+        // Thay đổi kiểu dữ liệu của cột
+        Schema::table('example_table', function (Blueprint $table) {
+            $table->string('name')->change(); // Thay đổi kiểu dữ liệu của cột 'name' thành string
+        });
+
+        // Đổi tên cột
+        Schema::table('example_table', function (Blueprint $table) {
+            $table->renameColumn('old_column', 'new_column'); // Đổi tên cột từ 'old_column' thành 'new_column'
+        });
+
+        // Thêm cột mới
+        Schema::table('example_table', function (Blueprint $table) {
+            $table->integer('stock')->default(0); // Thêm cột 'stock' kiểu integer với giá trị mặc định
         });
     }
 
@@ -51,21 +96,67 @@ class CreateProductsTable extends Migration
      */
     public function down()
     {
-        // Xóa bảng 'products'
-        Schema::dropIfExists('products');
+        // Xóa bảng 'example_table' nếu có
+        Schema::dropIfExists('example_table');
+
+        // Xóa cột 'sku'
+        Schema::table('example_table', function (Blueprint $table) {
+            $table->dropColumn('sku'); // Xóa cột 'sku'
+        });
+
+        // Xóa chỉ mục cho cột 'name'
+        Schema::table('example_table', function (Blueprint $table) {
+            $table->dropIndex(['name']); // Xóa chỉ mục cho cột 'name'
+        });
+
+        // Xóa khóa ngoại 'category_id'
+        Schema::table('example_table', function (Blueprint $table) {
+            $table->dropForeign(['category_id']); // Xóa khóa ngoại cho cột 'category_id'
+        });
+
+        // Xóa cột 'remember_token'
+        Schema::table('example_table', function (Blueprint $table) {
+            $table->dropColumn('remember_token'); // Xóa cột 'remember_token'
+        });
+
+        // Xóa cột 'softDeletes'
+        Schema::table('example_table', function (Blueprint $table) {
+            $table->dropSoftDeletes(); // Xóa cột 'deleted_at' cho xóa mềm
+        });
     }
 }
 ```
 
-### **Giải Thích Các Phương Thức trong `up()`**
+### Giải thích các câu lệnh:
 
-1. **`$table->id()`**: Tạo cột `id` tự động tăng.
-2. **`$table->string('name')`**: Tạo cột `name` kiểu chuỗi (string).
-3. **`$table->decimal('price', 10, 2)`**: Tạo cột `price` kiểu số thập phân, với 10 chữ số và 2 chữ số thập phân.
-4. **`$table->text('description')->nullable()`**: Tạo cột `description` kiểu text, có thể nhận giá trị null.
-5. **`$table->foreignId('category_id')->constrained()`**: Tạo cột `category_id` là khóa ngoại tham chiếu tới bảng `categories`.
-6. **`$table->timestamps()`**: Tạo hai cột `created_at` và `updated_at` để lưu trữ thời gian tạo và cập nhật.
-7. **`$table->string('sku')->unique()`**: Tạo chỉ mục duy nhất cho cột `sku`.
+1. **Tạo bảng mới** (`Schema::create`):
+    - Tạo bảng mới với các cột cơ bản như `id`, `name`, `price`, `description`, và khóa ngoại `category_id`.
+2. **Thêm cột mới** (`$table->column_type()`):
+
+    - Bạn có thể thêm các cột như `string`, `integer`, `decimal`, `text`, `boolean` vào bảng.
+
+3. **Thêm chỉ mục** (`$table->index()`, `$table->unique()`):
+    - Thêm chỉ mục cho cột như `name`, `sku` để tối ưu hóa việc tìm kiếm.
+4. **Thêm khóa ngoại** (`$table->foreignId()->constrained()`):
+    - Tạo khóa ngoại liên kết với bảng khác như `category_id` liên kết với bảng `categories`.
+5. **Cột xóa mềm** (`$table->softDeletes()`):
+    - Thêm cột `deleted_at` để thực hiện xóa mềm (soft deletes).
+6. **Cột `remember_token`**:
+    - Thêm cột `remember_token` để hỗ trợ chức năng "remember me" trong hệ thống xác thực.
+7. **Thay đổi kiểu dữ liệu** (`$table->change()`):
+
+    - Thay đổi kiểu dữ liệu của cột hiện tại (ví dụ: thay đổi `name` thành `string`).
+
+8. **Đổi tên cột** (`$table->renameColumn()`):
+
+    - Đổi tên cột từ `old_column` thành `new_column`.
+
+9. **Hủy các thay đổi** (`down()`):
+    - Trong phương thức `down()`, bạn có thể hủy các thay đổi đã thực hiện trong `up()`, ví dụ: xóa bảng, xóa cột, xóa chỉ mục, hoặc xóa khóa ngoại.
+
+### Cách sử dụng:
+
+-   Bạn có thể thêm hoặc thay đổi các câu lệnh trong phần `up()` và `down()` để thực hiện các thay đổi đối với cơ sở dữ liệu.
 
 ### **3. Thêm Cột Mới vào Bảng**
 

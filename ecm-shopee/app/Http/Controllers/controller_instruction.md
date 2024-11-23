@@ -17,10 +17,10 @@ php artisan make:controller <TênController>
 Ví dụ:
 
 ```bash
-php artisan make:controller CategoryController
+php artisan make:controller NameModelController
 ```
 
-Lệnh trên sẽ tạo file `CategoryController.php` trong thư mục `app/Http/Controllers`.
+Lệnh trên sẽ tạo file `NameModelController.php` trong thư mục `app/Http/Controllers`.
 
 ### **Tạo Controller Resource (Tích hợp các phương thức CRUD)**
 
@@ -31,7 +31,7 @@ php artisan make:controller <TênController> --resource
 Ví dụ:
 
 ```bash
-php artisan make:controller OrderController --resource
+php artisan make:controller NameModelController --resource
 ```
 
 Controller này sẽ tự động tạo các phương thức: `index`, `create`, `store`, `show`, `edit`, `update`, và `destroy`.
@@ -46,31 +46,31 @@ Controller này sẽ tự động tạo các phương thức: `index`, `create`,
     Bạn có thể kết nối route đến một phương thức trong controller.
 
 ```php
-use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\NameModelController;
 
-Route::get('/categories', [CategoryController::class, 'index']);
-Route::get('/categories/{id}', [CategoryController::class, 'show']);
-Route::post('/categories', [CategoryController::class, 'store']);
+Route::get('/name', [NameModelController::class, 'index']);
+Route::get('/name/{id}', [NameModelController::class, 'show']);
+Route::post('/name', [NameModelController::class, 'store']);
 ```
 
 -   **Sử dụng Resource Route**  
     Nếu controller được tạo với tùy chọn `--resource`, bạn có thể sử dụng một lệnh duy nhất để định nghĩa toàn bộ các route CRUD.
 
 ```php
-Route::resource('categories', CategoryController::class);
+Route::resource('name', NameModelController::class);
 ```
 
 Lệnh trên sẽ tự động tạo các route như sau:
 
-| HTTP Method | URL                   | Action  | Route Name         |
-| ----------- | --------------------- | ------- | ------------------ |
-| GET         | /categories           | index   | categories.index   |
-| GET         | /categories/create    | create  | categories.create  |
-| POST        | /categories           | store   | categories.store   |
-| GET         | /categories/{id}      | show    | categories.show    |
-| GET         | /categories/{id}/edit | edit    | categories.edit    |
-| PUT/PATCH   | /categories/{id}      | update  | categories.update  |
-| DELETE      | /categories/{id}      | destroy | categories.destroy |
+| HTTP Method | URL             | Action  | Route Name   |
+| ----------- | --------------- | ------- | ------------ |
+| GET         | /name           | index   | name.index   |
+| GET         | /name/create    | create  | name.create  |
+| POST        | /name           | store   | name.store   |
+| GET         | /name/{id}      | show    | name.show    |
+| GET         | /name/{id}/edit | edit    | name.edit    |
+| PUT/PATCH   | /name/{id}      | update  | name.update  |
+| DELETE      | /name/{id}      | destroy | name.destroy |
 
 ---
 
@@ -91,8 +91,8 @@ Hiển thị danh sách dữ liệu với phân trang thay vì tải toàn bộ 
 ```php
 public function index()
 {
-    $categories = Category::paginate(10); // Hiển thị 10 mục mỗi trang
-    return view('categories.index', compact('categories'));
+    $name = NameModel::paginate(10); // Hiển thị 10 mục mỗi trang
+    return view('name.index', compact('name'));
 }
 ```
 
@@ -105,16 +105,16 @@ Cho phép người dùng tìm kiếm dữ liệu thông qua từ khóa:
 ```php
 public function index(Request $request)
 {
-    $query = Category::query();
+    $query = NameModel::query();
 
     // Kiểm tra nếu có từ khóa tìm kiếm
     if ($request->has('search') && $request->search != '') {
         $query->where('name', 'like', '%' . $request->search . '%');
     }
 
-    $categories = $query->paginate(10);
+    $name = $query->paginate(10);
 
-    return view('categories.index', compact('categories'));
+    return view('name.index', compact('name'));
 }
 ```
 
@@ -130,9 +130,9 @@ public function index(Request $request)
     $sortField = $request->get('sort', 'created_at'); // Mặc định sắp xếp theo `created_at`
     $sortOrder = $request->get('order', 'desc'); // Mặc định thứ tự giảm dần
 
-    $categories = Category::orderBy($sortField, $sortOrder)->paginate(10);
+    $name = NameModel::orderBy($sortField, $sortOrder)->paginate(10);
 
-    return view('categories.index', compact('categories'));
+    return view('name.index', compact('name'));
 }
 ```
 
@@ -145,16 +145,16 @@ Lọc danh sách dựa trên các tiêu chí nhất định:
 ```php
 public function index(Request $request)
 {
-    $query = Category::query();
+    $query = NameModel::query();
 
     // Lọc theo trạng thái (ví dụ: `active` hoặc `inactive`)
     if ($request->has('status')) {
         $query->where('status', $request->status);
     }
 
-    $categories = $query->paginate(10);
+    $name = $query->paginate(10);
 
-    return view('categories.index', compact('categories'));
+    return view('name.index', compact('name'));
 }
 ```
 
@@ -167,10 +167,10 @@ Lấy tổng số bản ghi để hiển thị thông tin phụ trợ:
 ```php
 public function index()
 {
-    $categories = Category::paginate(10);
-    $totalCategories = Category::count();
+    $name = NameModel::paginate(10);
+    $totalCategories = NameModel::count();
 
-    return view('categories.index', compact('categories', 'totalCategories'));
+    return view('name.index', compact('name', 'totalCategories'));
 }
 ```
 
@@ -183,8 +183,8 @@ Lấy dữ liệu liên kết với một bảng khác (Eloquent Relationships):
 ```php
 public function index()
 {
-    $categories = Category::with('products')->paginate(10); // Lấy danh sách kèm sản phẩm liên kết
-    return view('categories.index', compact('categories'));
+    $name = NameModel::with('products')->paginate(10); // Lấy danh sách kèm sản phẩm liên kết
+    return view('name.index', compact('name'));
 }
 ```
 
@@ -197,11 +197,11 @@ Lấy dữ liệu với các điều kiện đặc biệt:
 ```php
 public function index()
 {
-    $categories = Category::where('is_featured', true) // Chỉ lấy danh mục nổi bật
+    $name = NameModel::where('is_featured', true) // Chỉ lấy danh mục nổi bật
                          ->orderBy('name', 'asc')     // Sắp xếp theo tên
                          ->paginate(10);
 
-    return view('categories.index', compact('categories'));
+    return view('name.index', compact('name'));
 }
 ```
 
@@ -214,13 +214,13 @@ Kết hợp danh sách với một số dữ liệu tĩnh hoặc cấu hình:
 ```php
 public function index()
 {
-    $categories = Category::all();
+    $name = NameModel::all();
     $settings = [
         'title' => 'Danh sách danh mục',
         'description' => 'Quản lý tất cả các danh mục sản phẩm.',
     ];
 
-    return view('categories.index', compact('categories', 'settings'));
+    return view('name.index', compact('name', 'settings'));
 }
 ```
 
@@ -231,7 +231,7 @@ public function index()
 ```php
 public function index(Request $request)
 {
-    $query = Category::query();
+    $query = NameModel::query();
 
     // Tìm kiếm
     if ($request->has('search') && $request->search != '') {
@@ -249,12 +249,12 @@ public function index(Request $request)
     $query->orderBy($sortField, $sortOrder);
 
     // Lấy dữ liệu kèm quan hệ
-    $categories = $query->with('products')->paginate(10);
+    $name = $query->with('products')->paginate(10);
 
     // Đếm tổng số danh mục
-    $totalCategories = Category::count();
+    $totalCategories = NameModel::count();
 
-    return view('categories.index', compact('categories', 'totalCategories'));
+    return view('name.index', compact('name', 'totalCategories'));
 }
 ```
 
@@ -271,14 +271,14 @@ public function create(Request $request)
     // Dữ liệu phụ trợ
     $statuses = ['active' => 'Active', 'inactive' => 'Inactive'];
     $parentId = $request->get('parent_id', null);
-    $parentCategory = $parentId ? Category::find($parentId) : null;
+    $parentNameModel = $parentId ? NameModel::find($parentId) : null;
 
     // Dữ liệu mặc định
     $defaultStatus = 'active';
 
-    // return view('categories.create', compact('statuses', 'parentCategory', 'defaultStatus'));
+    // return view('name.create', compact('statuses', 'parentNameModel', 'defaultStatus'));
 
-    return view('categories.create');
+    return view('name.create');
 }
 
 ```
@@ -288,14 +288,53 @@ public function create(Request $request)
 ```php
 public function store(Request $request)
 {
+    // Xác thực dữ liệu đầu vào
     $validated = $request->validate([
+        // Chuỗi (string)
         'name' => 'required|string|max:255',
-        'description' => 'required|string|max:255',
+        'description' => 'nullable|string|max:500',
+
+        // Số (number)
+        'price' => 'required|numeric|min:0|max:999999.99', // Giá (tối thiểu 0, tối đa 999,999.99)
+        'stock' => 'required|integer|min:0|max:100000', // Số lượng tồn kho (nguyên)
+
+        // Boolean (true/false)
+        'is_active' => 'required|boolean', // Trạng thái hoạt động
+
+        // Ngày (date)
+        'expiry_date' => 'nullable|date|after_or_equal:today', // Ngày hết hạn, không nhỏ hơn ngày hiện tại
+
+        // Email
+        'email' => 'required|email|max:255|unique:users,email', // Email duy nhất trong bảng users
+
+        // URL
+        'website' => 'nullable|url|max:255', // URL hợp lệ
+
+        // File (image)
+        'image' => 'nullable|file|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // File ảnh với kích thước tối đa 2MB
+
+        // Mảng (array)
+        'tags' => 'nullable|array', // Dữ liệu dạng mảng
+        'tags.*' => 'string|max:50', // Mỗi phần tử trong mảng phải là chuỗi và tối đa 50 ký tự
+
+        // Khóa ngoại
+        'category_id' => 'required|exists:name,id', // Phải tồn tại trong bảng name
     ]);
 
-    Category::create($validated);
+    $imagePath = null;
+    if ($request->hasFile('image')) {
+        $imagePath = $request->file('image')->store('products', 'public');
+    }
 
-    return redirect()->route('categories.index')->with('success', 'Category created successfully!');
+    NameModel::create([
+        'name' => $request->name,
+        'description' => $request->description,
+         ....
+        'image' => $imagePath, // Lưu đường dẫn ảnh
+    ]);
+
+
+    return redirect()->route('name.index')->with('success', 'NameModel created successfully!');
 }
 ```
 
@@ -304,8 +343,8 @@ public function store(Request $request)
 ```php
 public function show($id)
 {
-    $category = Category::findOrFail($id);
-    return view('categories.show', compact('category'));
+    $category = NameModel::findOrFail($id);
+    return view('name.show', compact('category'));
 }
 ```
 
@@ -314,25 +353,40 @@ public function show($id)
 ```php
 public function edit($id)
 {
-    $category = Category::findOrFail($id);
-    return view('categories.edit', compact('category'));
+    $category = NameModel::findOrFail($id);
+    return view('name.edit', compact('category'));
 }
 ```
 
 ### **Phương Thức `update` (Xử Lý Cập Nhật Dữ Liệu)**
 
 ```php
-public function update(Request $request, $id)
+public function update(Request $request, NameModel $name)
 {
     $validated = $request->validate([
         'name' => 'required|string|max:255',
         'description' => 'required|string|max:255',
+         ...
+        'image' => 'nullable|file|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // File ảnh với kích thước tối đa 2MB
     ]);
 
-    $category = Category::findOrFail($id);
-    $category->update($validated);
+    // Kiểm tra nếu có tệp ảnh mới được tải lên
+    if ($request->hasFile('image')) {
+        // Xóa ảnh cũ nếu có
+        if ($name->image) {
+            Storage::disk('public')->delete($name->image);
+        }
 
-    return redirect()->route('categories.index')->with('success', 'Category updated successfully!');
+        // Lưu ảnh mới vào thư mục 'names'
+        $imagePath = $request->file('image')->store('names', 'public');
+        $name->image = $imagePath;
+    }
+
+    // Cập nhật các trường còn lại của sản phẩm
+    $name->fill($request->only(['name', 'description', 'price', 'quantity', 'entry_date', 'category_id']));
+    $name->save();
+
+    return redirect()->route('name.index')->with('success', 'NameModel updated successfully!');
 }
 ```
 
@@ -341,10 +395,10 @@ public function update(Request $request, $id)
 ```php
 public function destroy($id)
 {
-    $category = Category::findOrFail($id);
+    $category = NameModel::findOrFail($id);
     $category->delete();
 
-    return redirect()->route('categories.index')->with('success', 'Category deleted successfully!');
+    return redirect()->route('name.index')->with('success', 'NameModel deleted successfully!');
 }
 ```
 
@@ -356,21 +410,21 @@ public function destroy($id)
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Category;
+use App\Models\NameModel;
 
-class CategoryController extends Controller
+class NameModelController extends Controller
 {
     // Hiển thị danh sách sản phẩm
     public function index()
     {
-        $categories = Category::all();
-        return view('categories.index', compact('categories'));
+        $name = NameModel::all();
+        return view('name.index', compact('name'));
     }
 
     // Hiển thị form tạo sản phẩm mới
     public function create()
     {
-        return view('categories.create');
+        return view('name.create');
     }
 
     // Lưu sản phẩm mới vào cơ sở dữ liệu
@@ -381,23 +435,23 @@ class CategoryController extends Controller
             'description' => 'required|string|max:255',
         ]);
 
-        Category::create($validated);
+        NameModel::create($validated);
 
-        return redirect()->route('categories.index')->with('success', 'Category created successfully!');
+        return redirect()->route('name.index')->with('success', 'NameModel created successfully!');
     }
 
     // Hiển thị chi tiết sản phẩm
     public function show($id)
     {
-        $category = Category::findOrFail($id);
-        return view('categories.show', compact('category'));
+        $category = NameModel::findOrFail($id);
+        return view('name.show', compact('category'));
     }
 
     // Hiển thị form cập nhật sản phẩm
     public function edit($id)
     {
-        $category = Category::findOrFail($id);
-        return view('categories.edit', compact('category'));
+        $category = NameModel::findOrFail($id);
+        return view('name.edit', compact('category'));
     }
 
     // Cập nhật sản phẩm trong cơ sở dữ liệu
@@ -408,19 +462,19 @@ class CategoryController extends Controller
             'description' => 'required|string|max:255',
         ]);
 
-        $category = Category::findOrFail($id);
+        $category = NameModel::findOrFail($id);
         $category->update($validated);
 
-        return redirect()->route('categories.index')->with('success', 'Category updated successfully!');
+        return redirect()->route('name.index')->with('success', 'NameModel updated successfully!');
     }
 
     // Xóa sản phẩm
     public function destroy($id)
     {
-        $category = Category::findOrFail($id);
+        $category = NameModel::findOrFail($id);
         $category->delete();
 
-        return redirect()->route('categories.index')->with('success', 'Category deleted successfully!');
+        return redirect()->route('name.index')->with('success', 'NameModel deleted successfully!');
     }
 }
 ```
