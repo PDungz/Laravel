@@ -49,7 +49,7 @@
                     @endforeach
                 </select>    
             </div>
-            <button class="btn btn-primary" type="submit">Thêm</button>
+            <button class="btn btn-primary btnCreate" type="submit" id="btnSubmit">Thêm</button>
             <a class="btn btn-danger" href="{{route('admin.products.index')}}">Hủy</a>
         </form>
     </div>

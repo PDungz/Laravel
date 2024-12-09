@@ -38,6 +38,7 @@
                     <th>Name</th>
                     <th>Image</th>
                     <th>Manufacturer</th>
+                    <th>Quantity</th>
                     <th>Price</th>
                     <th>Color</th>
                     <th>YearOfManufacture</th>
@@ -58,6 +59,7 @@
                             @endif
                         </td>
                         <td>{{$car->manufacturer}}</td>
+                        <td>{{$car->quantity}}</td>
                         <td>{{$car->price}}</td>
                         <td>{{$car->color}}</td>
                         <td>{{$car->yearOfManufacture}}</td>

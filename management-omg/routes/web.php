@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CarController;
+use App\Http\Controllers\CartController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,3 +21,4 @@ Route::get('/', function () {
 
 Route::resource('categories', CategoryController::class);
 Route::resource('cars', CarController::class);
+Route::resource('carts', CartController::class);

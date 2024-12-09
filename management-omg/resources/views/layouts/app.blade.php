@@ -341,6 +341,9 @@
                 <li>
                     <a href="{{ route('categories.index') }}">Danh mục</a>
                 </li>
+                <li>
+                    <a href="{{ route('carts.index') }}">Gio hang</a>
+                </li>
             </ul>
         </div>
     </nav>

@@ -39,6 +39,10 @@
                 <input class="input-field-full" type="text" id="price" name="price" required >
             </div>
             <div class="margin-bottom">
+                <label for="quantity">So luong:</label>
+                <input class="input-field-full" type="number" id="quantity" name="quantity" required >
+            </div>
+            <div class="margin-bottom">
                 <label for="color">Color:</label>
                 <input class="input-field-full" type="text" id="color" name="color" required >
             </div>

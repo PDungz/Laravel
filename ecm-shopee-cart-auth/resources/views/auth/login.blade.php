@@ -140,7 +140,7 @@
     </div>
     @endif
 
-    <button type="submit" class="btn btn-primary">Login</button>
+    <button type="submit" class="btn btn-primary" id="loginButton">Login</button>
 
     <!-- Chuyển sang trang đăng nhập -->
     <div class="switch-text">

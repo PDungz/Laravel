@@ -58,7 +58,7 @@
                     @endforeach
                 </select>    
             </div>
-            <button class="btn btn-primary" type="submit">Cập nhật</button>
+            <button class="btn btn-primary" type="submit" id="btnSubmit">Cập nhật</button>
             <a class="btn btn-danger" href="{{route('products.index')}}">Hủy</a>
         </form>
     </div>

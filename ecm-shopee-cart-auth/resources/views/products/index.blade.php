@@ -30,7 +30,7 @@
             <a class="btn btn-primary" href="{{route('products.create')}}">Thêm</a>
         </div>
 
-        <table class="table">
+        <table class="table" id="productTable">
             <thead>
                 <tr>
                     <th>Id</th>
@@ -63,7 +63,7 @@
                         <td>{{$product->category->name}}</td>
                         <td style="text-align: center">
                             <a class="btn btn-primary" href="{{route('products.show', $product->id)}}">Xem</a>
-                            <a class="btn btn-warning" href="{{route('products.edit', $product->id)}}">Sửa</a>
+                            <a id="btnEdit" class="btn btn-warning" href="{{route('products.edit', $product->id)}}">Sửa</a>
                             <form action="{{route('products.destroy', $product->id)}}" method="post" onsubmit="return confirmDelete();">
                                 @csrf
                                 @method('DELETE')

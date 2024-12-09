@@ -31,9 +31,10 @@
                     <th>Id</th>
                     <th>Sản phẩm</th>
                     <th>Hình ảnh</th>
-                    <th>Mô tả</th>
+                    <th>Hãng xe</th>
+                    <th>Ngày sản xuất</th>
                     <th>Số lượng</th>
-                    <th>Giá tiền</th>
+                    <th>Tổng tiền</th>
                     <th>Thao tác</th>
                 </tr>
             </thead>
@@ -41,30 +42,31 @@
                 @foreach ($carts as $cart)
                     <tr>
                         <td>{{ $cart->id }}</td>
-                        <td>{{ $cart->product->name }}</td>
+                        <td>{{ $cart->car->name }}</td>
                         <td>
-                            @if ($cart->product->image)
-                                <img src="{{ asset('storage/'.$cart->product->image) }}" alt="Ảnh {{ $cart->product->name }}" style="max-width: 100px; max-height: 100px; height: auto; width: auto;">
+                            @if ($cart->car->image)
+                                <img src="{{ asset('storage/'.$cart->car->image) }}" alt="Ảnh {{ $cart->car->name }}" style="max-width: 100px; max-height: 100px; height: auto; width: auto;">
                             @else
                                 <span>No Image</span>
                             @endif
                         </td>
-                        <td>{{ $cart->product->description }}</td>
+                        <td>{{ $cart->car->manufacturer }}</td>
+                        <td>{{ $cart->car->yearOfManufacture }}</td>
                         <td style="text-align: center">
                             <form action="{{ route('carts.update', $cart->id) }}" method="POST" id="form-{{ $cart->id }}">
                                 @csrf
                                 @method('PUT')
                                 <div class="margin-bottom" style="display: flex; align-items: center;">
                                     <div class="input-group" style="max-width: 200px; display: flex; align-items: center;">
-                                        <button type="button" onclick="changeQuantity({{ $cart->id }}, -1, {{ $cart->product->quantity }})" class="btn btn-outline-secondary" style="border: 1px solid #ccc; padding: 5px 10px;" {{ $cart->quantity == 1 ? 'disabled' : '' }}>-</button>
+                                        <button type="button" onclick="changeQuantity({{ $cart->id }}, -1)" class="btn btn-outline-secondary" style="border: 1px solid #ccc; padding: 5px 10px;" {{ $cart->quantity == 1 ? 'disabled' : '' }}>-</button>
                                         <input type="number" id="quantity-{{ $cart->id }}" name="quantity" class="input-field-full text-center" value="{{ $cart->quantity }}" required style="text-align: center; width: 60px; margin: 0 5px; border: 1px solid #ccc; height: 34px;">
-                                        <button type="button" onclick="changeQuantity({{ $cart->id }}, 1, {{ $cart->product->quantity }})" class="btn btn-outline-secondary" style="border: 1px solid #ccc; padding: 5px 10px;">+</button>
+                                        <button type="button" onclick="changeQuantity({{ $cart->id }}, 1)" class="btn btn-outline-secondary" style="border: 1px solid #ccc; padding: 5px 10px;">+</button>
                                     </div>
                                 </div>
                             </form>
                         </td>
                         
-                        <td>{{ $cart->product->price * $cart->quantity }}</td>
+                        <td>{{ $cart->car->price * $cart->quantity }}</td>
                         <td>
                             <form action="{{ route('carts.destroy', $cart->id) }}" method="post" onsubmit="return confirmDelete();">
                                 @csrf
@@ -81,20 +83,18 @@
 
 @section('scripts')
     <script>
-        function changeQuantity(cartId, change, productQuantity) {
+        function changeQuantity(cartId, change) {
             // Lấy giá trị hiện tại của số lượng
             var quantityInput = document.getElementById('quantity-' + cartId);
             var currentQuantity = parseInt(quantityInput.value);
 
             // Nếu giá trị thay đổi hợp lệ
-            if (currentQuantity + change >= 1 && currentQuantity + change <= productQuantity) {
+            if (currentQuantity + change >= 1) {
                 // Cập nhật lại giá trị của số lượng
                 quantityInput.value = currentQuantity + change;
 
                 // Gửi form tự động sau khi thay đổi số lượng
                 document.getElementById('form-' + cartId).submit();
-            } else if (currentQuantity + change > productQuantity) {
-                alert('Số lượng lơn hơn số lượng có trong kho');
             } else {
                 alert('Số lượng không thể nhỏ hơn 1');
             }

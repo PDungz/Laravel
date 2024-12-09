@@ -40,7 +40,7 @@ class ProductController extends Controller
     {
         try {
             $categories = Category::all();
-            return view('products.create', compact('categories'));
+            return view('admin.products.create', compact('categories'));
         } catch (\Exception $e) {
             return redirect()->route('admin.products.index')->with('error', "Không thể hiển thị form thêm $e. Vui lòng thử lại.");
         }
@@ -77,7 +77,7 @@ class ProductController extends Controller
                 'image' => $imagePath, // Lưu đường dẫn ảnh
             ]);
 
-            return redirect()->route('admin.products.index')->with('success', 'Tạo thành công');
+            return redirect()->route('admin.products.create')->with('success', 'Tạo thành công');
         } catch (\Exception $e) {
             Log::error("Lỗi khi thêm sản phẩm: " . $e->getMessage());
             return redirect()->route('admin.products.index')->with('error', 'Không thể tạo . Vui lòng thử lại.')->withInput(); 

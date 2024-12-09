@@ -53,6 +53,7 @@ class CarController extends Controller
                 'name' => 'required|string|max:255',
                 'manufacturer' => 'nullable|string',
                 'price' => 'required|integer|min:0',
+                'quantity' => 'required|integer|min:0',
                 'category_id' => 'required|exists:categories,id',
                 'color' => 'nullable|string|max:45',
                 'yearOfManufacture' => 'required|date',
@@ -68,6 +69,7 @@ class CarController extends Controller
                 'name' => $request->name,
                 'manufacturer' => $request->manufacturer,
                 'price' => $request->price,
+                'quantity' => $request->quantity,
                 'category_id' => $request->category_id,
                 'color' => $request->color,
                 'yearOfManufacture' => $request->yearOfManufacture,
@@ -119,6 +121,7 @@ class CarController extends Controller
                 'name' => 'required|string|max:255',
                 'manufacturer' => 'nullable|string',
                 'price' => 'required|integer|min:0',
+                'quantity' => 'required|integer|min:0',
                 'category_id' => 'required|exists:categories,id',
                 'color' => 'nullable|string|max:45',
                 'yearOfManufacture' => 'required|date',
@@ -138,16 +141,13 @@ class CarController extends Controller
             }
 
             // Cập nhật các trường còn lại của
-            $car->fill($request->only(['name', 'manufacturer', 'color', 'price', 'yearOfManufacture', 'category_id']));
+            $car->fill($request->only(['name', 'manufacturer', 'color', 'price', 'yearOfManufacture', 'category_id', 'quantity']));
             $car->save();
 
             // Chuyển hướng về danh sách với thông báo thành công
             return redirect()->route('cars.index')
                 ->with('success', 'Cập nhật thành công.');
         } catch (\Exception $e) {
-            // Log lỗi nếu có vấn đề khi cập nhật
-            Log::error("Lỗi khi cập nhật: " . $e->getMessage());
-            // Quay lại trang chỉnh sửa với thông báo lỗi
             return redirect()->back()->with('error', 'Không thể cập nhật. Vui lòng thử lại.')->withInput();
         }
     }
@@ -165,8 +165,6 @@ class CarController extends Controller
             $car->delete();
             return redirect()->route('cars.index')->with('success', 'Xóa thành công.');
         } catch (\Exception $e) {
-            // Log lỗi nếu có vấn đề khi xóa
-            Log::error("Lỗi khi xóa: " . $e->getMessage());
             return redirect()->route('cars.index')->with('error', 'Không thể xóa. Vui lòng thử lại.');
         }
     }
